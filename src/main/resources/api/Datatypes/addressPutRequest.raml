@@ -1,0 +1,40 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+      email: 
+        type: string
+        required: true
+      address:
+        type: array
+        items:
+          properties:
+            addressId:
+                example: 1
+                type: number
+                required: false
+            contactId:
+                example: 1
+                type: number
+            addressType:
+                example: "Home"
+                type: string
+                enum: ["Home", "Work"]
+            number:
+                example: 12345
+                type: number
+            street: 
+                example: "blah blah St"
+                type: string
+            unit: 
+                example: "1 a"
+                type: string
+            city: 
+                example: "Somewhere"
+                type: string
+            state:
+                example: "WV"
+                type: string
+            zipcode:
+                example: "12345"
+                type: string

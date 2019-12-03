@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="d39668b6-31c0-4a0a-aad9-549fd8c3bb23" file="${mule.env}.yaml" />
+	<http:request-config name="ProcessAPI_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="f5e95765-c365-40b9-958a-76d0dbf2747c" >
+		<http:request-connection host="${processAPI.host}" port="${processAPI.port}" />
+	</http:request-config>
+	<http:listener-config xmlns:http="http://www.mulesoft.org/schema/mule/http" name="experience-contactmanagement-db-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" name="experience-contactmanagement-db-api-config" raml="experience-contactmanagement-db-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    
+</mule>

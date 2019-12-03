@@ -1,0 +1,25 @@
+#%RAML 1.0 DataType
+
+type: "object"
+description: "Api Error Response"
+properties:
+  timestamp:
+    type: "datetime"
+    description: "The time when the error occurred"
+    required: false
+  message:
+    type: "string"
+    description: "A brief description of the error"
+    required: false
+  error-code:
+    type: "string"
+    description: "The code used to identify the type of error"
+    required: false
+  error-type:
+    type: "string"
+    description: "The classification of the type of error"
+    required: false
+  external-correlation-id:
+    type: "string"
+    description: "The unique identifier for where the error occurred"
+    required: false

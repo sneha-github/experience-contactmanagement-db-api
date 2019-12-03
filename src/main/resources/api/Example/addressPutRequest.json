@@ -1,0 +1,15 @@
+ {
+   "email": "test@test.com",
+   "address":[ 
+      { 
+         "addressType":"Home",
+         "contactId":1,
+         "number":1234,
+         "street":"blah blah St",
+         "unit":"1 a",
+         "city":"Somewhere",
+         "state":"WV",
+         "zipcode":"12345"
+      }
+   ]
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="deleteContactFlow" doc:id="130018f3-6072-4cd9-9970-0a50e8affa56">
+					<set-variable value="#[attributes.headers]" doc:name="headers" doc:id="c6ae5e12-e63f-4997-b941-720ee1de2d5b" variableName="headers"/>
+		<set-variable value="#[attributes.queryParams.'email']" doc:name="Set Variable" doc:id="c712c2e6-8bf1-4140-8bc1-d7d0e77ca19d" variableName="email"/>
+		<logger level="INFO" doc:name="Logger" doc:id="6e55f188-32bf-47e4-9da0-e07c3d4c4af2" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Started&quot;
+}]"/>
+		<http:request method="DELETE" doc:name="Request" doc:id="f3b6cb0f-326f-482e-bbe7-fd1bbd44114c" config-ref="ProcessAPI_HTTP_Request_configuration" path="${processAPI.deleteContact.path}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	'X-correlation-id' : vars.headers.'X-correlation-id',
+	'X-session-id' : vars.headers.'X-session-id',
+	clientId : vars.headers.clientId,
+	clientSecretKey : vars.headers.clientSecretKey
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	email : vars.email
+}]]]></http:query-params>
+		</http:request>
+				<logger level="INFO" doc:name="Logger" doc:id="c1950f5f-7462-46f7-bb6f-661783b06b13" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Completed&quot;
+}]"/>
+	</flow>
+</mule>

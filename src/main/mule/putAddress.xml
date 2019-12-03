@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	
+	<flow name="putAddressFlow" doc:id="fc9fb120-39d2-41ac-8590-8f7127c5fa26" >
+				<set-variable value="#[attributes.headers]" doc:name="headers" doc:id="4d3bec90-1789-48b6-b635-8f14473b4cd1" variableName="headers"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3a5dafe3-06c6-4031-9a69-8f17ba513104" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Started&quot;
+}]"/>
+		<http:request method="PUT" doc:name="Request" doc:id="7b3ee75e-2c1a-4319-9fc6-bb9d8c583473" config-ref="ProcessAPI_HTTP_Request_configuration" path="${processAPI.putAddress.path}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	'X-correlation-id' : vars.headers.'X-correlation-id',
+	'X-session-id' : vars.headers.'X-session-id',
+	clientId : vars.headers.clientId,
+	clientSecretKey : vars.headers.clientSecretKey
+}]]]></http:headers>
+		</http:request>
+				<logger level="INFO" doc:name="Logger" doc:id="937628a9-2f51-439f-a3e1-0bec2fb4ac01" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Completed&quot;
+}]"/>
+	</flow>
+</mule>

@@ -1,0 +1,27 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+      email:
+        type: string
+        required: true
+      communication:
+        type: array
+        items:
+          properties:
+            communicationId:
+                example: 1
+                type: number
+                required: false
+            contactId:
+                example: 1
+                type: number
+            communicationType:
+                example: "email"
+                type: string
+                enum: ["email", "cell", "phone", "fax"]
+            value:
+                example: "bfe@sample.com"
+                type: string
+            preferred:
+                type: boolean

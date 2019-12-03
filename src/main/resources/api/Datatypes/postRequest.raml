@@ -1,0 +1,66 @@
+#%RAML 1.0 DataType
+description: This is used for creating a new user. 
+type: object
+properties:
+  identification:
+    type: object
+    required: true
+    properties:
+      firstName: 
+        type: string
+        required: true
+      lastName:
+        type: string
+        required: true
+      dateofBirth:
+        type: string
+        required: true
+      gender:
+        type: string
+        required: true
+      title:
+        type: string
+        required: true
+      email:
+        type: string
+        required: true
+  address:
+    type: array
+    items: 
+      type: object  
+      properties:
+        typeOfAddress:
+          type: string
+          required: true
+        number:
+          type: string
+          required: true
+        street:
+          type: string
+          required: true
+        unit:
+          type: string
+          required: true
+        city:
+          type: string
+          required: true
+        state:
+          type: string
+          required: true
+        zipcode:
+          type: string
+          required: true
+  communication:
+    type: array
+    items: 
+      type: object
+      properties:
+        typeofCommunication:
+          type: string
+          required: true
+        value:
+          type: string
+          required: true
+        preferred:
+          type: boolean
+          required: false

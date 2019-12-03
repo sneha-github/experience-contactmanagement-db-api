@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="getContactByEmailFlow" doc:id="3b579948-5942-48ec-abba-c75a38b52b46">
+	<set-variable value="#[attributes.headers]" doc:name="headers" doc:id="2c41e44c-4a58-4538-8bb4-7821e34fda8b" variableName="headers"/>
+		<set-variable value="#[attributes.uriParams.'email']" doc:name="Set Variable" doc:id="e733f5e8-26bd-47ad-88d1-5c68eaf8f9f6" variableName="email"/>
+		<logger level="INFO" doc:name="Logger" doc:id="33159494-f4d7-4fa6-9d70-61816458894b" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Started&quot;
+}]"/>
+		<http:request method="GET" doc:name="Request" doc:id="75086872-171a-4ead-8c17-3775a8f141e6" config-ref="ProcessAPI_HTTP_Request_configuration" path="${processAPI.getContact.path}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	'X-correlation-id' : vars.headers.'X-correlation-id',
+	'X-session-id' : vars.headers.'X-session-id',
+	clientId : vars.headers.clientId,
+	clientSecretKey : vars.headers.clientSecretKey
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	email : vars.email
+}]]]></http:query-params>
+		</http:request>
+				<logger level="INFO" doc:name="Logger" doc:id="d34cf8ff-b781-42f5-a7d0-e0d058d4d352" message="#[output application/json
+---
+{
+	correlationId: vars.headers.'X-correlation-id',
+	sessionId: vars.headers.'X-session-id',
+	applicationName: app.name,
+	message: &quot;Call to Process API Completed&quot;
+}]"/>
+	</flow>
+</mule>

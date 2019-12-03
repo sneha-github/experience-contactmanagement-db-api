@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+    <flow name="experience-contactmanagement-db-api-main">
+        <http:listener xmlns:http="http://www.mulesoft.org/schema/mule/http" config-ref="experience-contactmanagement-db-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" config-ref="experience-contactmanagement-db-api-config" />
+        <error-handler ref="globalError_Handler" />
+        </flow>
+	<flow name="experience-contactmanagement-db-api-console">
+        <http:listener xmlns:http="http://www.mulesoft.org/schema/mule/http" config-ref="experience-contactmanagement-db-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" config-ref="experience-contactmanagement-db-api-config" />
+    </flow>
+    <flow name="put:\contactManagement\address:application\json:experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="a8679018-b8df-4fba-93c4-a60c63f52642" name="putAddressFlow"/>
+    </flow>
+    <flow name="put:\contactManagement\communication:application\json:experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="3bbb42d4-6ac6-4ea9-9235-afa96c746f22" name="putCommunicationFlow"/>
+    </flow>
+    <flow name="put:\contactManagement:application\json:experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="b454a410-93e8-4309-9d1b-e8f5b309d4df" name="putContactFlow"/>
+    </flow>
+    <flow name="delete:\contactManagement:experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="c9f6e565-9e50-4d0e-ab4d-4754f987eb39" name="deleteContactFlow"/>
+    </flow>
+    <flow name="get:\contactManagement:experience-contactmanagement-db-api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="4b08862c-32dd-4218-bf0b-db0eba96b78f">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  identification: {
+    firstName: "Bob",
+    lastName: "Frederick",
+    dateofBirth: "06/21/1980",
+    gender: "M",
+    title: "Manager",
+    email: "test@test.com"
+  },
+  address: [
+    {
+      typeOfAddress: "home",
+      number: "1234",
+      street: "blah blah St",
+      unit: "1 a",
+      city: "Somewhere",
+      state: "WV",
+      zipcode: "12345"
+    }
+  ],
+  communication: [
+    {
+      typeofCommunication: "email",
+      value: "bfe@sample.com",
+      preferred: true
+    }, 
+    {
+      typeofCommunication: "cell",
+      value: "304-555-8282"
+    }
+  ]
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\contactManagement\(email):experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="45322e07-73fa-4858-b9fe-9d4f2772e273" name="getContactByEmailFlow"/>
+    </flow>
+    <flow name="post:\contactManagement:application\json:experience-contactmanagement-db-api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="51413543-46a0-4d54-af13-b46b4eb8c58a" name="postContactFlow"/>
+    </flow>
+</mule>

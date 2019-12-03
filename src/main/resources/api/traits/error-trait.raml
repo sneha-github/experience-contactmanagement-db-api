@@ -1,0 +1,24 @@
+#%RAML 1.0 Trait
+
+
+responses:
+  400:
+    description: "Bad Request"
+    body:
+      appication/json:
+        type: "errorResponse"
+  401:
+    description: "Unauthorized"
+    body:
+      appication/json:
+        type: "errorResponse"
+  404:
+    description: "Not Found"
+    body:
+      appication/json:
+        type: "errorResponse"
+  500:
+    description: "Internal Server Error"
+    body:
+      appication/json:
+        type: "errorResponse"

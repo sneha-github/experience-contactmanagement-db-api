@@ -1,0 +1,92 @@
+#%RAML 1.0
+title: experience-contactManagement-db-api
+baseUri: /api/{version}
+version: v1
+mediaType: [ application/json ]
+
+types:
+  errorResponse: !include Datatypes/errorResponseType.raml
+
+traits: 
+ logging: !include traits/logging.raml
+ clientId-enforcement: !include  traits/security.raml
+ errorTraits: !include traits/error-trait.raml 
+
+
+/contactManagement:
+  get:
+    description: Get all the contacts
+    is: [logging,clientId-enforcement,errorTraits]
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/getResponse.raml
+            example: !include Example/getResponse.json
+      
+  /{email}:
+    get:
+      description: This method is used to get a particular contact
+      is: [logging,clientId-enforcement,errorTraits]
+      responses:
+        200:
+          body:
+            application/json:
+              type: !include Datatypes/getResponse.raml
+              example: !include Example/getResponse.json
+  post:
+    description: Create a new User
+    is: [logging,clientId-enforcement,errorTraits]
+    body:
+      application/json:
+        type: !include Datatypes/postRequest.raml
+        example: !include Example/postRequest.json
+    responses:
+      201:
+        body:
+          application/json:
+            type: !include Datatypes/commonResponse.raml
+            example: !include Example/postResponse.json 
+  put:
+    description: Update a contact record
+    is: [logging,clientId-enforcement,errorTraits]
+    body:
+      application/json:
+        type:  !include Datatypes/putRequest.raml
+        example: !include Example/putRequest.json
+    responses:
+      204:
+        description: User Updated Successfully.
+  delete:
+    description: delete a contact record
+    is: [logging,clientId-enforcement,errorTraits]
+    queryParameters:
+      email: 
+        type: string
+        example: test@test.com
+        required: true 
+    responses:
+      204:
+        description: User deleted Successfully.
+  /address:
+    put:
+      description: Update a contact record
+      is: [logging,clientId-enforcement,errorTraits]
+      body:
+        application/json:
+          type:  !include Datatypes/addressPutRequest.raml
+          example: !include Example/addressPutRequest.json
+      responses:
+        204:
+          description: Address Details Updated Successfully.
+  /communication:
+    put:
+      description: Update a contact record
+      is: [logging,clientId-enforcement,errorTraits]
+      body:
+        application/json:
+          type:  !include Datatypes/communicationPutRequest.raml
+          example: !include Example/communicationPutRequest.json
+      responses:
+        204:
+          description: Communication Details Updated Successfully. 
