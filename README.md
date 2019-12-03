@@ -23,6 +23,7 @@ For system APIs along with environment names (using above property) need to prov
 secret.key=demo
 
 
+![dbTableStructure](https://github.com/sneha-github/experience-contactmanagement-db-api/blob/master/dbTableStructure.jpeg)
 
 Database Table Creation Script
 
